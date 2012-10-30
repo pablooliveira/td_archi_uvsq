@@ -1,0 +1,202 @@
+\documentclass[a4paper,10pt]{exam}
+
+\usepackage[latin9]{inputenc}
+\usepackage[cyr]{aeguill}
+\usepackage[francais]{babel}
+\usepackage{fullpage}
+\usepackage{amsmath}
+\usepackage{array}
+
+\noprintanswers
+%\printanswers
+
+\title{IEEE-754 : Aide Mémoire}
+
+\author{}
+\date{}
+
+\begin{document}
+\maketitle
+
+\section{Repr\'esentation des r\'eels}
+
+On consid\`ere la norme IEEE 754 pour repr\'esenter les r\'eels :
+
+\begin{center}
+	\begin{tabular}{|>{\centering}p{2cm}|>{\centering}p{3cm}|>{\centering}p{6cm}|}  \hline
+  	Signe (S) & Exposant (E) & Pseudomantisse (P)\tabularnewline  \hline
+	\multicolumn{1}{>{\centering}p{2cm}}{1 bit} & \multicolumn{1}{>{\centering}p{3cm}}{\textit{e} bits} & \multicolumn{1}{>{\centering}p{6cm}}{\textit{p} bits}\tabularnewline
+	\end{tabular}
+\end{center}
+
+Le nombre ainsi repr\'esent\'e a pour valeur :
+
+$ (-1)^S * 2^{E - (2^{e-1} - 1)} * (1+\frac{P}{2^p})$
+
+\subsubsection*{Valeurs particuli\`eres}
+
+Les valeurs de l'exposant avec tous les bits \`a 0 ou 1 ($E=00000000$ et $E=11111111$ en 32-bits) sont r\'eserv\'ees pour repr\'esenter des valeurs particuli\`eres, \`a savoir :
+
+\begin{center}
+\begin{tabular}{|c|c|c|}
+	\hline
+	Exposant & Pseudomantisse & Valeur\\	\hline
+	Tous les bits \`a 0 & Tous les bits \`a 0 & Repr\'esentation de la valeur z\'ero.\\ \hline
+	Tous les bits \`a 0 & Au moins un bit non nul & Repr\'esentation d'une valeur d\'enormalis\'ee. \\ \hline
+	Tous les bits \`a 1 & Tous les bits \`a 0 & Repr\'esentation d'une valeur infinie \\ \hline
+	Tous les bits \`a 1 & Au moins un bit non nul & Repr\'esentation d'une valeur \textit{NaN} \\ \hline
+	\end{tabular}
+\end{center}
+
+\begin{itemize}
+\item Il y a deux repr\'esentations possibles pour le z\'ero, le z\'ero positif et le z\'ero n\'egatif.
+
+\item Les nombres d\'enormalis\'es sont utilis\'es pour repr\'esenter certaines valeurs sortant de l'intervalle autoris\'e par la repr\'esentation utilis\'ee.
+
+\item Un nombre d\'enormalis\'e a pour valeur :$ (-1)^S * 2^{ 1 - (2^{e-1} - 1)}
+  * (\frac{P}{2^p})$. Attention pas de 1 implicite devant la pseudo-mantisse.
+
+\item Une valeur infinie est utilis\'ee pour indiquer par exemple un d\'epassement de capacit\'e. Il y a deux valeurs infinies possibles, positive et n\'egative.
+
+\item Une valeur \textit{NaN} indique toute valeur erronn\'ee, comme par exemple la racine carr\'ee d'un nombre n\'egatif.
+
+\end{itemize}
+
+\subsubsection*{Arrondis}
+
+Si un nombre ne peut pas exactement \^etre repr\'esent\'e en binaire flottant, on utilise une valeur arrondie. Il existe plusieurs modes d'arrondi :
+\begin{itemize}
+\item L'arrondi au plus proche arrondit \`a la valeur la plus proche. En cas d'\'egalit\'e, on choisit la valeur paire (se terminant par 0 en binaire). C'est le mode d'arrondi par d\'efaut.
+\item L'arrondi vers 0 arrondit \`a la valeur la plus proche de 0 (troncature).
+\item L'arrondi vers $+\infty$ arrondit \`a la plus proche valeur la plus grande.
+\item L'arrondi vers $-\infty$ arrondit \`a la plus proche valeur la plus petite.
+
+\end{itemize}
+
+\subsubsection*{Formats courants}
+
+\begin{center}
+\begin{tabular}{|c|c|c|c|c|}
+\hline
+  & Taille & Signe & Exposant & Pseudomantisse\\ \hline
+  Simple pr\'ecision & 32 & 1 & 8 & 23\\ \hline
+  Double pr\'ecision & 64 & 1 & 11 & 52\\ \hline
+\end{tabular}
+\end{center}
+
+Dans la suite, pour simplifier les calculs, les r\'eels seront d\'esormais
+repr\'esent\'es sur 16 bits avec la repr\'esentation suivante (ce n'est pas la
+m\^eme que la repr\'esentation demi pr\'ecision de la norme IEEE 754) :
+
+\begin{center}
+	\begin{tabular}{|>{\centering}p{2cm}|>{\centering}p{3cm}|>{\centering}p{6cm}|}
+	\hline
+	Signe & Exposant & Mantisse\tabularnewline
+	\hline
+	\multicolumn{1}{>{\centering}p{2cm}}{1 bit} &
+        \multicolumn{1}{>{\centering}p{3cm}}{4 bits} &
+        \multicolumn{1}{>{\centering}p{6cm}}{11 bits}\tabularnewline
+	\end{tabular}
+\end{center}
+
+\section{Codage d'un flottant}
+Comment représenter $1.32$ en flottant ? $ 1.32 = \frac{132}{100} = \frac{33}{25} $
+
+\begin{center}
+\footnotesize
+\begin{verbatim}
+ 100001        | 11001
+- 11001        |------        /
+-------vv      | 1.01010001111\01...
+   100000                     /
+  - 11001
+   ------vv
+      11100
+    - 11001
+    -------vvvv
+         110000
+       -  11001
+       --------v
+          101110
+         - 11001
+         -------v
+           101010
+          - 11001
+          -------v
+            100010
+            ....
+\end{verbatim}
+\end{center}
+
+On dispose de 11 bits pour la pseudo-mantisse, $01010001111$ est l'arrondi au
+plus proche.
+
+L'exposant ici est $2^0$ et le signe $0$, donc ce chiffre s'écrira en flottant:
+$$ 0\quad 0111 \quad 01010001111 $$
+
+\section{Additions sur les flottants}
+
+L'addition de deux flottants se fait en plusieurs \'etapes. On prendra comme
+exemple l'addition des nombres suivants:
+\begin{align}
+0\quad 0111\quad 10000000000 =& + 1.1 \times 2^{7-(2^{4-1}-1)} = + 1.1_{2} \times
+2^{0} = 1.5\\
+0\quad 0110\quad 00000000000 =& + 1.0 \times 2^{6-(2^{4-1}-1)} = + 1.0_{2} \times
+2^{-1} = 0.5
+\end{align}
+
+\begin{enumerate}
+\item On ram\`ene les deux nombres au m\^eme exposant, le plus grand des deux.
+  On d\'ecale donc les bits de la mantisse du nombre ayant le plus petit
+  exposant d'autant de bits vers la droite que la diff\'erence entre les
+  exposants, sans oublier le 1 avant la virgule.
+
+  Dans l'exemple on veut augmenter de 1 l'exposant du deuxième terme.  La
+  mantisse compl\`ete du second nombre passe donc de $1.00000000000$ \`a
+  $0.10000000000$ (on supprime le z\'ero le plus \`a droite pour rester sur 11
+  bits).
+
+\item On ajoute ensuite les deux mantisses, en tenant compte du signe (attention
+  ici les mantisses ne sont pas exprim\'ees en compl\'ement \`a 2)
+  Dans l'exemple les mantisses sont de même signe on peut donc les ajouter directement:
+  $1.10000000000 + 0.10000000000 = 10.00000000000$
+
+\item On renormalise ensuite le nombre obtenu.
+  Dans l'exemple, le r\'esultat a donc pour exposant $0$ et pour mantisse $10.000000000$ :
+  on renormalise la mantisse, ce qui augmente l'exposant de 1. On a donc le
+  r\'esultat final :
+  $$0\quad 1000\quad 00000000000 = + 1.0_{2} \times 2^{1} = 2$$
+\end{enumerate}
+
+\section{Multiplication sur les flottants}
+
+Supposons que l'on multiplie les nombres suivants:
+\begin{align}
+0\quad 1000\quad 01000000000 &= + 1.01_{2} \times 2^{1} = 10.1_{2} = 2.5\\
+0\quad 1000\quad 10000000000 &= + 1.1_{2} \times 2^{1} = 11_{2} = 3
+\end{align}
+
+La multiplication se fait en plusieurs étapes:
+\begin{enumerate}
+
+\item D\'etermination du bit de signe : il vaut 1 si les bits de signe des deux r\'eels sont diff\'erents, et 0 s'ils sont identiques.
+Ici, les bits de signe sont identiques : le bit de signe du r\'esultat sera donc $0$
+
+
+\item L'exposant est la somme des exposants respectifs des r\'eels.
+
+Les exposants des deux r\'eels sont tous les deux 1 : l'exposant du r\'esultat
+sera donc $1+1=2$, soit $1001_{2}$ en codage par exc\`es.  Cela peut aussi se
+faire en ajoutant les exposants tels qu'ils apparaissent dans la
+repr\'esentation binaire et en y soustrayant l'exc\'edent.
+  $$1000_{2} + 1000_{2} - 111_{2} = 8 + 8 - 7 = 9 = 1001_{2}$$
+
+\item On multiplie les mantisses entre elles. Ceci peut s'effectuer d'une fa\c{c}on similaire \`a une multiplication en base 10.
+
+ La multiplication des mantisses $1.01000000000$ et $1.1000000000$ peut s'\'ecrire :
+$$1.01 \times 1.1 = 1.01  \times (1.0 + 0.1) = 1.01 + 0.101 = 1.111$$ soit $1.11100000000$ pour la mantisse du r\'esultat.
+On en d\'eduit l'\'ecriture du r\'esultat : $0\quad 1001\quad 11100000000$, ce qui correspond bien \`a l'\'ecriture de $7.5$
+\end{enumerate}
+
+
+\end{document}

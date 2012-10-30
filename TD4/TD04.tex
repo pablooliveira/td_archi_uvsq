@@ -1,0 +1,245 @@
+\documentclass[a4paper,10pt]{exam}
+
+\usepackage[utf8]{inputenc}
+\usepackage[cyr]{aeguill}
+\usepackage[francais]{babel}
+\usepackage{fullpage}
+\usepackage{amsmath}
+\usepackage{array}
+
+\ifthenelse{\equal{\detokenize{correction}}{\jobname}}
+{\printanswers}
+{\noprintanswers}
+
+\title{Architecture des ordinateurs - TD 04}
+
+\author{}
+\date{}
+
+\begin{document}
+\maketitle
+
+\section{Codage excédent 127}
+
+La repr\'esentation sur 8 bits en excédent 127 consiste à
+encoder la valeur $x + 127$ en binaire.
+Par exemple pour encoder $-27$ on prendra $1100100_2 = 100_{10}$.
+
+\begin{enumerate}
+\item Quelle est la valeur minimale et maximale codable en excédent 127
+  sur 8 bits ?
+  \begin{solution}
+    -127 et 128
+  \end{solution}
+  \item Donner la représentation en excédent 127 des nombres suivants:
+    10, 23 et -40
+    \begin{solution}
+      $10 = 10001001$
+
+      $23 = 10010110$
+
+      $-40 = 01010111$
+    \end{solution}
+  \item Calculer $1001_{exc} + 11000011_{exc}$ en excédent 127:
+    \begin{enumerate}
+      \item en convertissant chaque terme en décimal, puis en convertissant
+        le résultat en excédent 127.
+      \item proposer une méthode qui ne nécessite pas le passage en décimal.
+    \end{enumerate}
+    \begin{solution}
+      $-118 + 68 = -50 = 1001101$
+
+      $1001 + 11000011 - 1111111 = 11001100 - 01111111 = 01001101 $
+    \end{solution}
+\end{enumerate}
+
+\section{Repr\'esentation des r\'eels}
+\begin{enumerate}
+
+\item Donnez la plus grande et la plus petite valeur strictement positives repr\'esentables en simple pr\'ecision (normalis\'e). M\^eme question avec un nombre d\'enormalis\'e.
+
+\begin{solution}
+Minimum = $0 00000001 0000000000000000000000$, soit $2^{-126}$.
+
+En d\'enormalis\'e : $0 00000000 000000000000000000000001 = 2^{-148}$
+
+Maximum = $0 11111110 1111111111111111111111$, soit $2^{127}*(2-2^{-23}) \simeq 2^{128}$
+
+\end{solution}
+
+Pour simplifier, dans la suite on utilisera la représentation suivante:
+
+\begin{center}
+	\begin{tabular}{|>{\centering}p{2cm}|>{\centering}p{3cm}|>{\centering}p{6cm}|}
+	\hline
+	Signe & Exposant & Mantisse\tabularnewline
+	\hline
+	\multicolumn{1}{>{\centering}p{2cm}}{1 bit} &
+        \multicolumn{1}{>{\centering}p{3cm}}{4 bits} &
+        \multicolumn{1}{>{\centering}p{6cm}}{11 bits}\tabularnewline
+	\end{tabular}
+\end{center}
+
+
+\item Exprimez  les nombres d\'ecimaux suivants (on utilisera l'arrondi par d\'efaut si n\'ecessaire) :
+
+$1.5$
+
+$-0.125$
+
+$153.75$
+
+$-0.2$
+
+\begin{solution}
+\begin{align*}
+1.5 =& 0\quad 0111\quad 10000000000\\
+-0.125 =& 1\quad 0100\quad 00000000000\\
+153.75 =& 0\quad 1110\quad 00110011100\\
+-0.2 =& 1\quad 0100\quad 10011001100
+\end{align*}
+\end{solution}
+
+\item Convertissez en d\'ecimal les nombres flottants suivants  :
+
+$0\quad 1110\quad 00000110010$
+
+$1\quad 0001\quad 00101100000$
+
+$0\quad 0000\quad 00100100000$
+
+$0\quad 1111\quad 10000000001$
+
+\begin{solution}
+
+\begin{enumerate}
+  \item $131.125 = 1.0244140625 \times 2^{7}$
+  \item $0.018310546875 = 1.171875 \times 2^{-6}$
+  \item dénormalisé: $0.00439453125 (0.28125 \times 2^{-6})$
+  \item NaN
+\end{enumerate}
+
+\end{solution}
+
+\item Quelle est la repr\'esentation en simple pr\'ecision (sur 32 bits) des nombres suivants, exprim\'es en double pr\'ecision (sur 64 bits) :
+
+$4004000000000000_{16}$
+
+$37E8000000000000_{16}$
+
+$C800000000000000_{16}$
+
+\begin{solution}
+$4004000000000000 (= 2.5) = 40200000$ en simple
+
+$37E8000000000001 (= (1.5+\epsilon)*2^{-129}) = 00180000$ en simple
+
+$C800000000000000_{16} (=-2^{129})$ overflow, \'eventuellement $FF800000$ ($-\infty$)
+
+\end{solution}
+
+\end{enumerate}
+
+\pagebreak
+\section{Sommes de flottants}
+
+\begin{enumerate}
+
+\item Effectuez les calculs suivants en utilisant la repr\'esentation des r\'eels :
+
+$0\quad  0101\quad  10111000011 + 0\quad  0011\quad  00011110101$
+
+$1\quad  1101\quad  10010001000 + 0\quad  0110\quad  10000000000$
+
+\begin{solution}
+\begin{verbatim}
+1)
+On décale la mantisse du deuxième nombre de 2:
+  1.10111000011
++ 0.01000111101
+---------------
+ 10.00000000000 * 2^-2
+
+On renormalise 0 0110 00000000000 = 0.5
+
+2)
+On décale la mantisse du deuxième nombre de 7:
+0.00000011000 - 1.10010001000 = -(1.10010001000 - 0.00000011000)
+                              = - 1.10001110000
+car
+  1.10010001000
+- 0.00000011000
+---------------
+  1.10001110000
+
+Le résultat (déjà normalisé): 1 1101 10001110000 = -99.5
+\end{verbatim}
+\end{solution}
+\end{enumerate}
+\section{Multiplication de flottants}
+\begin{enumerate}
+\item Effectuez les multiplications suivantes:
+$0\quad 1001\quad 00110000000 \times 0\quad  0111\quad  10000000000$
+
+$1\quad 1100\quad 00000000000 \times 0\quad  0110\quad  01000000000$
+\begin{solution}
+\begin{verbatim}
+1)
+  Le signe du résultat est positif (0)
+  L'exposant est la somme des exposants : 2 + 0 = 2
+        1.0011
+      * 1.1000
+      --------
+             0
+            0
+           0
+      10011
+     10011
+     ---------
+    1.11001000
+
+  Le résultat est donc 0 1001 11001000000 = 7.125
+
+2)
+  Le signe du résultat est négatif (1)
+  L'exposant est la somme des exposants : 5 - 1 = 4
+  On multiplie les mantisses:
+     1.01 * 1.0 = 1.01
+
+  Le résultat est donc 0 1011 01000000000 = 20
+\end{verbatim}
+
+\end{solution}
+
+\item Repr\'esentez les nombres $3$ et $\frac{1}{3}$ en utilisant les arrondis
+  au plus pr\`es, vers 0, vers $+\infty$ et vers $-\infty$. Donnez ensuite les valeurs d\'ecimales correspondantes.
+
+\begin{solution}
+\begin{itemize}
+\item L'arrondi au plus proche arrondit \`a la valeur la plus proche. En cas d'\'egalit\'e, on choisit la valeur paire (se terminant par 0 en binaire). C'est le mode d'arrondi par d\'efaut.
+\item L'arrondi vers 0 arrondit \`a la valeur la plus proche de 0 (troncature).
+\item L'arrondi vers $+\infty$ arrondit \`a la plus proche valeur la plus grande.
+\item L'arrondi vers $-\infty$ arrondit \`a la plus proche valeur la plus petite.
+
+\end{itemize}
+$3 = 0 1000 10000000000$ dans tous les cas
+$\frac{1}{3} = 0 0101 01010101010$ en arrondi vers 0, et vers $-\infty$ (en
+d\'ecimal : $0.333252$), $0 0101 01010101011$  au plus pr\`es et vers $+\infty$ (en d\'ecimal : $0.333374$)
+\end{solution}
+
+\item Donnez le r\'esultat de la multiplication de ces deux nombres.
+
+\begin{solution}
+On ajoute les exposants, on multiplie les mantisses, et on normalise.
+
+Au plus pr\`es et vers $+\infty$, les mantisses donnent $10.00000000000$ et l'exposant deviendrait $-1$, on a donc $0 0111 00000000000$ (soit $1$)
+
+En arrondi vers 0 et $-\infty$, les mantisses donnent $1.11111111110$ et l'exposant deviendrait $-1$, donc $0 0110 11111111111$ (soit $0.999756$)
+
+\end{solution}
+
+\end{enumerate}
+
+
+
+\end{document}

@@ -1,0 +1,249 @@
+\documentclass[a4paper,10pt]{exam}
+
+\usepackage[latin9]{inputenc}
+\usepackage[cyr]{aeguill}
+\usepackage[francais]{babel}
+\usepackage{fullpage}
+\usepackage{array}
+
+\ifthenelse{\equal{\detokenize{correction}}{\jobname}}
+{\printanswers}
+{\noprintanswers}
+
+\title{Architecture des ordinateurs - TD 01}
+\author{}
+\date{Mercredi 2 février 2011}
+
+\begin{document}
+\maketitle
+\section{Conversions de base}
+\begin{enumerate}
+\item Convertissez les nombres d\'ecimaux suivants en binaire :
+
+$255_{10}$, $104_{10}$, $1048576_{10}$, $2010_{10}$
+
+\begin{solution}
+ $255_{10} = 1111 1111_{2}$.
+
+ $104_{10} = 1101000_{2}$.
+
+ $1048576_{10} = 100000000000000000000_{2}$.
+
+ $2010 = 11111011010_{2}$
+\end{solution}
+
+
+\item Convertissez les nombres d\'ecimaux suivants en base 5 :
+
+$250_{10}$, $78_{10}$, $33_{10}$, $622_{10}$,
+
+\begin{solution}
+$250_{10} = 2000_{5}$
+$78_{10} = 303_{5}$
+$33_{10} = 113_{5}$
+$622_{10} = 4442_{5}$
+\end{solution}
+
+\item Convertissez les nombres suivants en décimal :
+
+$1234_{5}$, $1234_{7}$, $1234_{9}$
+
+\begin{solution}
+$1234_{5} = 194_{10}$
+$1234_{7} = 466_{10}$
+$1234_{9} = 922_{10}$
+\end{solution}
+
+
+\item Convertissez les nombres binaires suivants en hexad\'ecimal puis en octal:
+
+$110_{2}$, $1011_{2}$, $1100000011011110_{2}$, $11110101100_{2}$
+
+\begin{solution}
+ $110_{2} = 6_{16} = 6_{8}$.
+
+ $1011_{2} = B_{16} = 13_{8}$.
+
+ $1100000011011110_{2} = C0DE_{16} = 140336_{8} $.
+
+ $11110101100_{2} = 7AC_{16} = 2564_{8}$
+
+\end{solution}
+
+\item Convertissez les nombres hexad\'ecimaux suivants en d\'ecimal :
+
+$400_{16}$, $A000_{16}$, $FFFF_{16}$, $7FFF_{16}$, $CAFE_{16}$
+
+\begin{solution}
+ $400_{16} = 1024_{10}$
+
+ $A000_{16} = 40960_{10}$
+
+ $FFFF_{16} = 65535_{10}$
+
+ $7FFF_{16} = 32767_{10}$
+
+ $CAFE_{16} = 51966_{10}$
+
+\end{solution}
+
+\item Quel est le plus grand entier positif codable sur 9 bits en binaire ? Combien faut-il de chiffres pour l'\'ecrire en octal ? Et en hexad\'ecimal ?
+
+\begin{solution}
+$511_{10} (111111111_{2})$. Il faut 3 chiffres pour l'\'ecrire en octal et 3 en hexad\'ecimal.
+\end{solution}
+
+\end{enumerate}
+
+\section{Additions et Multiplications en binaire}
+
+\begin{enumerate}
+\item Additionnez les entiers positifs suivants directement en binaire, indiquez
+  les cas qui produisent un overflow de la représentation 8 bits :
+
+$00101001_2 + 11001010_2$
+
+$10101011_2 + 11001010_2$
+
+$11111111_2 + 11111111_2$
+
+\begin{solution}
+ $00101001_2 (41_{10}) + 11001010_2 (202_{10}) = 11110011_2 (243_{10})$.
+
+ $10101011_2 (171_{10}) + 11001010_2 (202_{10}) = 101110101_2 (303_{10})$ le
+ résultat produit un overflow.
+
+ $11111111_2 (255_{10}) + 11111111_2 (255_{10}) = 111111110_2 (510_{10})$ le
+ résultat produit un overflow.
+\end{solution}
+
+\item Multipliez les entiers positifs suivants, indiquez
+  les cas qui produisent un overflow de la représentation 8 bits :
+
+$00001001_2 \times 00001010_2$
+
+$00101001_2 \times 11001010_2$
+
+$11111111_2 \times 11111111_2$
+
+\begin{solution}
+ $00001001_2 (9_{10}) \times 00001010_2 (10_{10}) = 01011010_2 (90_2)$.
+
+ $10101011_2 (171_{10}) \times 11001010_2 (202_{10}) = 1000011011101110_2 (34542_{10})$ le
+ résultat produit un overflow.
+
+ $11111111_2 (255_{10}) \times 11111111_2 (255_{10}) = 1111111000000001_2 (65025_{10})$ le
+ résultat produit un overflow.
+\end{solution}
+
+
+\item Additionnons un entier $x$ codé en $n$ bits et un entier $y$ codé en $m$
+  bits, sur combien de bits faut-il coder le résultat pour éviter un overflow ?
+
+\begin{solution}
+
+  Supposons sans perte de généralité que $n \geq m$.
+  Prenons $x_{max} = 2^{n}-1$ et $y_{max} = 2^{m}-1$.
+  Or $x+y \leq x_{max} + y_{max} = 2^{n} + 2^{m} - 2 = 2^{n}.(1 + 2^{m-n} - 2^{1-n}) <
+  2^{n}.2$, il faut donc $n + 1 = max(n,m) + 1$ bits.
+\end{solution}
+
+\item Même question pour la multiplication avec $n \geq 2$ et $m \geq 2$.
+
+\begin{solution}
+  Prenons $x_{max} = 2^{n}-1$ et $y_{max} = 2^{m}-1$.
+  Or $x \times y \leq x_{max} \times y_{max} = 2^{n+m} - 2^{n} - 2^{m} + 1 <
+  2^{n+m}$, il faut donc au maximum $n+m$ bits.
+
+
+  Montrons que l'on ne peut pas coder le résultat en $n+m-1$ bits,
+  soit $2^{n+m} - 2^{n} - 2^{m} + 1 > 2^{n+m-1}$.
+
+  On sait $2^n + 2^m \leq 2^n + 2^n \leq 2^{n+1} \leq 2^{n+m-1}$ car $n \geq m \geq 2$.
+
+  $2^n + 2^m + 2^{n+m-1} \leq 2^{n+m-1} + 2^{n+m-1}$
+
+  $2^n + 2^m + 2^{n+m-1} \leq 2^{n+m}$
+
+  $2^n + 2^m + 2^{n+m-1} -1 < 2^{n+m}$
+\end{solution}
+
+
+\end{enumerate}
+
+\section{Repr\'esentation des binaires cod\'es en d\'ecimal}
+
+\begin{enumerate}
+\item Donnez la repr\'esentation en binaire cod\'e en d\'ecimal des nombres suivants :
+
+$89$
+
+$2048$
+
+$1984$
+
+\begin{solution}
+$89 = 1000 1001$
+
+$2048 = 0010 0000 0100 1000$
+
+$1984 = 0001 1001 1000 0100$
+\end{solution}
+
+\item Donnez la	valeur d\'ecimale des nombres cod\'es en binaire suivants :
+
+$0100 0010$, $0010 0000 0001 0001$, $0101 0001 0010$
+
+\begin{solution}
+$0100 0010 = 42$
+
+$0010 0000 0001 0001 = 2011$
+
+$0101 0001 0010 = 512$
+
+\end{solution}
+
+\item Estimez la rapport entre le nombre de bits n\'ecessaires pour coder un nombre en binaire et en binaire cod\'e d\'ecimal.
+
+\begin{solution}
+Binaire : Il faut $\lceil log_2(n+1) \rceil$ bits.
+
+BCD : Il faut $4* \lceil log_{10}(n+1) \rceil$ bits.
+
+Le ratio est donc environ de $4*ln(2)/ln(10)$, soit autour de $1,2$.
+
+\end{solution}
+
+\end{enumerate}
+
+\section{Repr\'esentation en virgule fixe}
+Dans la représentation en virgule fixe, un nombre décimal s'écrit
+avec $n$ chiffres pour la partie entière et $q$ chiffres pour la partie
+fractionnaire. Voici quelques nombres décimaux lorsque $n=2$ et $q=3$:
+$12,345$, $05,217$.
+
+\begin{enumerate}
+  \item Arrondissez les rationnels suivants à la valeur décimale la plus
+    proche en virgule fixe ($n=2$ et $q=3$):
+    $1/3$
+    $15/7$
+    \begin{solution}
+      $0,333$
+      $2,143$
+    \end{solution}
+  \item Quelle est l'erreur maximale obtenue lors d'un arrondi dans
+    la représentation décimale en virgule fixe ($n$,$q$) ?
+    \begin{solution}
+      $0.5 \times 10^{-q}$
+    \end{solution}
+  \item Quel est le résultat de l'opération suivante : dans les réels ? en
+    virgule fixe ($n=2$ et $q=3$) ?
+    $0,14 \times 0,99$
+    \begin{solution}
+      $0,1386$
+
+      $0,139$
+    \end{solution}
+\end{enumerate}
+
+\end{document}

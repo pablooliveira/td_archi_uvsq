@@ -1,0 +1,19 @@
+Supports de TD architecture des ordinateurs L2 UVSQ
+
+Pour compiler un sujet de TD et sa correction:
+ $ cd TD<numéro souhaité>/
+ $ make all
+
+Le sujet et sa correction seront construits dans le
+sous-répertoire build/
+
+Mainteneur: Pablo Oliveira <pablo.oliveira@prism.uvsq.fr>
+Contributeurs:
+ Julien Jaeger, nouveaux exercices et corrections
+ William Jalby, nombreux exercices
+ José Nodohouenou, corrections
+ Cédric Valensi, nombreux exercices corrigés ainsi que l'aide mémoire IEEE-754
+
+Merci à l'équipe de Comelec de l'ENST de mettre ses TDs en libre accès,
+http://comelec.enst.fr/tpsp/eni/. Certains des exercices sont inspirés
+des leurs.

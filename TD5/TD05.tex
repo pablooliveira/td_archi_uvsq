@@ -1,0 +1,399 @@
+\documentclass[a4paper,10pt]{exam}
+
+\usepackage[utf8]{inputenc}
+\usepackage[cyr]{aeguill}
+\usepackage[francais]{babel}
+\usepackage{fullpage}
+\usepackage{amsmath}
+\usepackage{array}
+\usepackage{tikz}
+\input kvmacros
+\usetikzlibrary{arrows,shapes,trees,patterns,fit,backgrounds,%
+decorations.pathreplacing,chains,calc,decorations.pathmorphing,matrix}
+
+\ifthenelse{\equal{\detokenize{correction}}{\jobname}}
+{\printanswers}
+{\noprintanswers}
+
+\title{Architecture des ordinateurs - TD 05}
+
+\author{}
+\date{}
+
+\begin{document}
+\maketitle
+
+\section{Algèbre de Boole: simplifications}
+\begin{enumerate}
+  \item Démontrer les propriétés suivantes:
+    \begin{align}
+      X(\overline{X} + Y) = XY \\
+      (X+Y)(X+Z) = X + YZ \\
+      XY + X\overline{Y} = X \\
+      (X+Y)(X+\overline{Y}) = X \\
+      XY + \overline{Y} = X + \overline{Y}
+    \end{align}
+    \begin{solution}
+      \begin{align*}
+        X(\overline{X} + Y) = X\overline{X} + XY = 0 + XY \\
+        (X+Y)(X+Z) = XX + XZ + YX + YZ = X(1 + Y + Z) + YZ = X.1 + YZ \\
+        XY + X\overline{Y} = X(Y + \overline{Y}) = X.1 \\
+        (X+Y)(X+\overline{Y}) = X + Y\overline{Y} (\textrm{car (2)}) = X + 0\\
+        X + \overline{Y} = (X + \overline{Y})(Y + \overline{Y}) = \overline{Y} + XY
+      \end{align*}
+    \end{solution}
+  \item Simplifier les expressions suivantes:
+    \begin{align}
+      AB\overline{C} + \overline{(AB\overline{C})}\\
+      (AB + C\overline{D})(AB + \overline{D}E)\\
+      A + \overline{B}C + \overline{D}(A+\overline{B}C)\\
+      A\overline{B}(C + D) + \overline{(C + D)}\\
+      (\overline{(EF)} + AB + \overline{C}\overline{D})(EF)\\
+      (AB + C) + (D + EF)\overline{(AB + C)}
+  \end{align}
+  \begin{solution}
+    \begin{align*}
+      AB\overline{C} + \overline{(AB\overline{C})} = \Delta + \overline{\Delta}
+      = 1 \\
+      (AB + C\overline{D})(AB + \overline{D}E) = AB + C\overline{D}E
+      \textrm{(car (2))}\\
+      A + \overline{B}C + \overline{D}(A+\overline{B}C) = \Delta +
+      \overline{D}\Delta = \Delta = (A + \overline{B}C)\\
+      A\overline{B}(C + D) + \overline{(C + D)} = A\overline{B} + \overline{(C +
+        D)} \textrm{car (5)}\\
+      (\overline{(EF)} + AB + \overline{C}\overline{D})(EF) = (EF)(AB +
+      \overline{C}\overline{D})\\
+      (AB + C) + (D + EF)\overline{(AB + C)} = (AB + C) + (D + EF)
+  \end{align*}
+  \end{solution}
+
+\item Donner le tableau de Karnaugh correspondant à la table de vérité ci-dessous.
+Simplifier F.
+\begin{center}
+\begin{tabular}{cc|c}
+P&Q&F\\
+\hline
+0&0&1\\
+0&1&1\\
+1&0&0\\
+1&1&1\\
+\end{tabular}
+\end{center}
+
+\begin{solution}
+  \begin{center}\begin{tikzpicture}
+    \matrix (karnaugh) [matrix of math nodes] {
+      1 & 1 \\
+      0 & 1 \\
+    } ;
+
+    \foreach \i/\bits in {1/0,2/1} {
+      \node [above = 2mm of karnaugh-1-\i] {$\bits$} ;
+      \node [left  = 2mm of karnaugh-\i-1] {$\bits$} ;
+    }
+
+    \node [left  = .6cm of karnaugh.west]  {$P$} ;
+    \node [above = .5cm of karnaugh.north] {$Q$} ;
+
+    \begin{pgfonlayer}{background}
+      \begin{scope}[opacity=.5]
+        \draw [thick]
+              (karnaugh-1-1.north west) rectangle (karnaugh-1-2.south east)
+              (karnaugh-1-2.north west) rectangle (karnaugh-2-2.south east);
+      \end{scope}
+    \end{pgfonlayer}
+  \end{tikzpicture}\end{center}
+
+  $$
+  Q+\overline{P}
+  $$
+\end{solution}
+
+\item Donner le tableau de Karnaugh correspondant à la table de vérité ci-dessous.
+Simplifier F.
+\begin{center}
+\begin{tabular}{ccc|c}
+A&B&C&F\\
+\hline
+0&0&0&0\\
+0&0&1&1\\
+0&1&0&1\\
+0&1&1&0\\
+1&0&0&1\\
+1&0&1&1\\
+1&1&0&0\\
+1&1&1&1\\
+\end{tabular}
+\end{center}
+
+\begin{solution}
+  \begin{center}\begin{tikzpicture}
+    \matrix (karnaugh) [matrix of math nodes] {
+      0 & 1 \\
+      1 & 1 \\
+      0 & 1 \\
+      1 & 0 \\
+    } ;
+
+    \foreach \i/\bits in {1/0,2/1} {
+      \node [above = 2mm of karnaugh-1-\i] {$\bits$} ;
+    }
+
+    \foreach \i/\bits in {1/00,2/01,3/11,4/10} {
+      \node [left  = 2mm of karnaugh-\i-1] {$\bits$} ;
+    }
+
+    \node [left  = .6cm of karnaugh.west]  {$BC$} ;
+    \node [above = .5cm of karnaugh.north] {$A$} ;
+
+    \begin{pgfonlayer}{background}
+      \begin{scope}[opacity=.5]
+        \draw [thick]
+        (karnaugh-1-2.north west) rectangle (karnaugh-3-2.south east)
+        (karnaugh-2-1.north west) rectangle (karnaugh-2-2.south east)
+        (karnaugh-4-1.north west) rectangle (karnaugh-4-1.south east);
+      \end{scope}
+    \end{pgfonlayer}
+  \end{tikzpicture}\end{center}
+
+  $$
+  A\overline{B} + AC + \overline{B}C + \overline{A}B\overline{C}
+  $$
+\end{solution}
+
+\end{enumerate}
+
+\pagebreak
+\section{L'assassinat de la Duchesse}
+Un crime exécrable a été commis au manoir: la Duchesse Alice a été assassinée.
+L'inspecteur de police mêne son enquête.  Un des occupants ment.
+L'inspecteur note les déclarations suivantes:
+\begin{enumerate}
+  \item Bob: je n'ai pas tué la Duchesse.
+  \item Celine: Dimitri et Eric ont tué la Duchesse.
+  \item Dimitri: Céline et Eric ont tué la Duchesse.
+  \item Eric: Céline n'a pas tué la Duchesse.
+\end{enumerate}
+Qui est coupable ?
+Construisez une table de verité pour aider l'inspecteur.
+
+\begin{solution}
+  Soit X la proposition: \og X a tué la duchesse\fg{}.
+  Soit x la proposition: \og X dit la verité\fg{}.
+
+  \begin{tabular}{ccccccccc}
+    BCDE&b&c&d&e&un seul menteur\\
+    0000&1&0&0&1&0\\
+    0001&1&0&0&1&0\\
+    0010&1&0&0&1&0\\
+    0011&1&1&0&1&1\\
+    0100&1&0&0&0&0\\
+    0101&1&0&1&0&0\\
+    0110&1&0&0&0&0\\
+    0111&1&1&1&0&1\\
+    1000&0&0&0&1&0\\
+    1001&0&0&0&1&0\\
+    1010&0&0&0&1&0\\
+    1011&0&1&0&1&0\\
+    1100&0&0&0&0&0\\
+    1101&0&0&1&0&0\\
+    1110&0&0&0&0&0\\
+    1111&0&1&1&0&0\\
+  \end{tabular}
+
+  Il y a deux solutions:
+  \begin{itemize}
+    \item C,D,E ont tué la duchesse.
+    \item D,E ont tué la duchesse.
+  \end{itemize}
+
+  Suspens: Céline est-elle coupable ?
+\end{solution}
+
+\section{Problème du coffre fort}
+
+Une banque s'équipe d'un nouveau coffre-fort.
+Le coffre-fort ne peut-être ouvert que par:
+\begin{itemize}
+  \item le directeur et le sous-directeur ensemble.
+  \item le directeur, le comptable et le fondé de pouvoir de la banque.
+  \item le sous-directeur, le comptable et le fondé de pouvoir.
+\end{itemize}
+
+Combien faut-il installer de serrures au minimum sur ce coffre ?
+Comment répartir les clefs de ces serrures parmis les personnes
+ci-dessus ?
+
+\begin{enumerate}
+\item
+  Soit $D$ une variable booléenne valant $1$ lorsque le directeur est
+  présent pour l'ouverture du coffre et $0$ dans le cas contraire.  On définira
+  de la même manière $S,C,F$ pour les trois autres responsables de la banque.
+  Soit une fonction $F(D,S,C,F) \rightarrow \{0,1\}$. $F$ vaut 1 si et seulement
+  si le coffre doit être ouvert. Par exemple $F(0,0,1,1) = 0$: le comptable
+  et le fondé de pouvoir ne peuvent ouvrir le coffre à eux seuls.
+
+ Ecrire l'équation booléene ou la table de vérité caractérisant la fonction $F$.
+\begin{solution}
+  $F(D,S,C,F) = D.S + D.C.F + S.C.F$
+\end{solution}
+
+\item Ecrire la fonction $F$ sous la forme $F = \Sigma(n,m,\dots)$ où $n,m,\dots$
+  est la représentation décimale des minterms.
+\begin{solution}
+  $F(D,S,C,F) = \Sigma(7,11,12,13,14,15)$
+\end{solution}
+
+\item Écrire le tableau de Karnaugh de $\overline{F}$.
+\item Trouver grâce au tableau de Karnaugh, la forme normale disjonctive
+  minimale de $\overline{F}$.
+\item En utilisant les lois de Morgan, trouvez la forme normale conjonctive
+  minimale de $F$.
+\item Combien de serrures faut-il installer ? Comment répartir les clefs parmi
+  le personnel ?
+\begin{solution}
+
+  \begin{center}\begin{tikzpicture}
+    \matrix (karnaugh) [matrix of math nodes] {
+      1 & 1 & 1 & 1 \\
+      1 & 1 & 0 & 1 \\
+      0 & 0 & 0 & 0 \\
+      1 & 1 & 0 & 1 \\
+    } ;
+
+    \foreach \i/\bits in {1/00,2/01,3/11,4/10} {
+      \node [left  = 2mm of karnaugh-\i-1] {$\bits$} ;
+      \node [above = 2mm of karnaugh-1-\i] {$\bits$} ;
+    }
+
+    \node [left  = .6cm of karnaugh.west]  (DS) {$DS$} ;
+    \node [above = .5cm of karnaugh.north] (CF) {$CF$} ;
+
+    \begin{pgfonlayer}{background}
+      \begin{scope}[opacity=.5]
+        \draw [thick]
+              (karnaugh-1-1.north west) rectangle (karnaugh-2-2.south east);
+        \draw [thick]
+              (karnaugh-1-1.north west) rectangle (karnaugh-1-4.south east);
+        \fill [blue!40]
+              (karnaugh-1-1.north west) rectangle (karnaugh-1-1.south east)
+              (karnaugh-4-4.north west) rectangle (karnaugh-4-4.south east)
+              (karnaugh-1-4.north west) rectangle (karnaugh-1-4.south east)
+              (karnaugh-4-1.north west) rectangle (karnaugh-4-1.south east);
+        \fill [red!20]
+              (karnaugh-1-4.north west) rectangle (karnaugh-2-4.south east)
+              (karnaugh-1-1.north west) rectangle (karnaugh-2-1.south east);
+        \fill [green!20]
+              (karnaugh-1-1.north west) rectangle (karnaugh-1-2.south east)
+              (karnaugh-4-1.north west) rectangle (karnaugh-4-2.south east);
+      \end{scope}
+    \end{pgfonlayer}
+  \end{tikzpicture}\end{center}
+
+$$
+  \overline{F} = \overline{D}.\overline{C} + \overline{D}.\overline{S} +
+\overline{F}.\overline{S}
+  + \overline{S}.\overline{C} + \overline{D}.\overline{F}
+$$
+
+$$
+  F = (D+C).(D+S).(F+S).(S+C).(D+F)
+$$
+
+Il faut donc 5 serrures:
+\begin{itemize}
+  \item D reçoit les clefs 1,2,5.
+  \item S reçoit les clefs 2,3,4
+  \item C reçoit les clefs 1,4
+  \item F reçoit les clefs 3,5
+\end{itemize}
+\end{solution}
+
+\end{enumerate}
+
+
+% \section{Afficheur 7 segments}
+% On souhaite réaliser un circuit pour afficher les chiffres de 0 à 9 sur un
+% afficheur 7 segments (voir figure ci-dessous).  Un afficheur 7 segments, est
+% composés de 7 leds commandées par 7 signaux distincts $A_1 \dots A_7$.  Le
+% chiffre à afficher est codé en BCD, chaque bit correspond à un signal $b_3$ à
+% $b_0$.
+
+% Nous souhaitons réaliser le circuit permettant de commander le signal $A_3$
+% correspondant à l'allumage du segment inférieur.
+
+% \vspace{1cm}
+% \begin{minipage}{0.4\textwidth}
+% \begin{center}
+% Codage BCD
+
+% \begin{tabular}{c|c}
+%   déc. & $b_3b_2b_1b_0$ \\
+%   \hline
+%   0 & 0000\\
+%   1 & 0001\\
+%   2 & 0010\\
+%   3 & 0011\\
+%   4 & 0100\\
+%   5 & 0101\\
+%   6 & 0110\\
+%   7 & 0111\\
+%   8 & 1000\\
+%   9 & 1001
+% \end{tabular}
+% \end{center}
+% \end{minipage}
+% \begin{minipage}{0.4\textwidth}
+% \begin{center}
+% Afficheur 7 segments
+
+% \begin{tikzpicture}
+%   \draw (0.1,0) -- node[above] {$A_1$} (0.9,0);
+%   \draw (0.1,-1) -- node[above] {$A_2$} (0.9,-1);
+%   \draw (0.1,-2) -- node[below] {$A_3$} (0.9,-2);
+
+%   \draw (0,-0.1) -- node[left] {$A_4$} (0,-0.9);
+%   \draw (1,-0.1) -- node[right] {$A_5$} (1,-0.9);
+
+%   \draw (0,-1.1) -- node[left] {$A_6$} (0,-1.9);
+%   \draw (1,-1.1) -- node[right] {$A_7$} (1,-1.9);
+% \end{tikzpicture}
+% \end{center}
+% \end{minipage}
+
+% \begin{enumerate}
+%   \item Écrire la table de vérité du signal $A_3$.
+%     Lorsque la valeur de $A_3$ est indeterminée écrire X (par exemple pour B=13).
+%     \begin{solution}
+%       \begin{tabular}{cccc|c}
+%         $b_3$& $b_2$& $b_1$& $b_0$& $A_3$\\
+%         \hline
+%         0&0&0&0&1\\ %0
+%         0&0&0&1&0\\ %1
+%         0&0&1&0&1\\ %2
+%         0&0&1&1&1\\ %3
+%         0&1&0&0&0\\ %4
+%         0&1&0&1&1\\ %5
+%         0&1&1&0&1\\ %6
+%         0&1&1&1&0\\ %7
+%         1&0&0&0&1\\ %8
+%         1&0&0&1&0\\ %9
+%         1&0&1&0&X\\ %10
+%         1&0&1&1&X\\ %11
+%         1&1&0&0&X\\ %12
+%         1&1&0&1&X\\ %13
+%         1&1&1&0&X\\ %14
+%         1&1&1&1&X\\ %15
+%       \end{tabular}
+%     \end{solution}
+%   \item Écrire le tableau de Karnaugh correspondant à la table de vérité de
+%     $A_3$.
+%     \begin{solution}
+%       \begin{tabular}{c|c|c|c|c|}
+
+%       \end{tabular}
+%     \end{solution}
+% \end{enumerate}
+
+
+\end{document}
