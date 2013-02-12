@@ -27,7 +27,7 @@
 $36_{10}$, $-123_{10}$, $-45_{10}$
 
 \begin{solution}
-$36_{10} = 00100110_{2}$ dans les 3 \'ecritures.
+$36_{10} = 00100100_{2}$ dans les 3 \'ecritures.
 
 $-123_{10} = 11111011_{2}$ en signe+abs, $10000100_{2}$ en compl\'ement \`a 1 et $10000101_{2}$ en compl\'ement \`a 2
 
@@ -39,7 +39,7 @@ $-45_{10} = 10101101_{2}$ en signe+abs, $11010010_{2}$ en compl\'ement \`a 1 et 
 
 $11111111_{2}$, $01001000_{2}$, $10001111_{2}$
 
-Quelle seraient ces valeurs en compl\'ement \`a 1 ? En signe plus valeur absolue ?
+Quelles seraient ces valeurs si ces nombres binaires représentaient un compl\'ement \`a 1 ? Un signe plus valeur absolue ?
 \begin{solution}
 $11111111_{2} = -1_{10}$ si cplment 2, $0_{10}$ si cplment 1 et $-127_{10}$ si sign+valeur abs.
 
@@ -109,9 +109,9 @@ $00100100_{2} + 01000000_{2} = 01100100_{2}$
 
 $00011001_{2} + 11001110_{2} = 11100111_{2}$
 
-$11110110_{2} + 10100110_{2} = 10011100_{2}$
+$11110110_{2} + 10100110_{2} = 110011100_{2}$
 
-$00101101_{2} + 01101111_{2} = 10011011_{2}$
+$00101101_{2} + 01101111_{2} = 010011100_{2}$ (overflow)
 
 $10000001_{2} + 11000000_{2} = 101000001_{2}$ (overflow)
 
@@ -171,7 +171,7 @@ On utilise la convention convention suivante : $m_n = 1$ si et seulement si $n
 \in E$.  Par exemple, pour représenter l'ensemble $E'$ on utilisera le mot $M'=
 00000000000000001000000100110000_2$.
 
-Nous souhaitons écrire une fonction \texttt{char get\_size(u\_int32\_t M);} qui
+Nous souhaitons écrire une fonction \texttt{char get\_size(uint32\_t M);} qui
 calcule le cardinal de l'ensemble $E$. Cela revient à compter le nombre de bits
 à 1.
 
@@ -180,9 +180,9 @@ calcule le cardinal de l'ensemble $E$. Cela revient à compter le nombre de bits
   l'opérateur $>>$.  Dans le pire cas vous effectuerez $32$ itérations.
 \begin{solution}
 \begin{verbatim}
-char get_size(u_int32_t M) {
+char get_size(uint32_t M) {
     char count = 0;
-    while(m) {
+    while(M) {
 	    count += M & 1; // incrémenter si le dernier bit est à 1
 	    M = M >> 1; // décaler m à droite
     }
@@ -208,7 +208,7 @@ maximum $card(E)$ itérations.
 
 \begin{solution}
 \begin{verbatim}
-char get_size_faster(u_int32_t M) {
+char get_size_faster(uint32_t M) {
     char count = 0;
     while(M) {
 	    M = M & (M-1); // on annule le bit à 1 le plus à droite.
