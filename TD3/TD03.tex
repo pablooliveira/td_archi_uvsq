@@ -28,7 +28,7 @@
     maximum effectués ?
     \begin{solution}
 \begin{verbatim}
-char premier_bit_a_un(u_int32_t M) {
+char premier_bit_a_un(uint32_t M) {
     char pos = 0;
     while(M) {
        M = M >> 1;
@@ -58,10 +58,10 @@ char premier_bit_a_un(u_int32_t M) {
     \begin{solution}
 \begin{verbatim}
 
-u_int32_t masque[] = {0xFFFF0000, 0xFF00, 0xF0, 0b1100, 0b10};
-u_int32_t shift[]  = {16        , 8     , 4   , 2     , 1   };
+uint32_t masque[5] = {0xFFFF0000, 0xFF00, 0xF0, 0b1100, 0b10};
+uint32_t shift[5]  = {16        , 8     , 4   , 2     , 1   };
 
-char premier_bit_a_un_dichotomique(u_int32_t M) {
+char premier_bit_a_un_dichotomique(uint32_t M) {
     char pos = 0;
     char i;
 
@@ -139,10 +139,10 @@ Un code 2 parmi 5, représente chaque chiffre de 0 à 9 sur 5 bits.
     distincts.
 
     Deuxième cas: $n_i = n_j$ et $m_i \neq m_j$ (ou vice-versa), la distance
-    de hamming est 2, il faut pour passer de $C_i$ à $C_j$ éteindre $m_i$ et
+    de Hamming est 2, il faut pour passer de $C_i$ à $C_j$ éteindre $m_i$ et
     allumer $m_j$.
 
-    Troisième cas: $n_i \neq n_j$ et $m_i \neq m_j$, la distance de hamming est
+    Troisième cas: $n_i \neq n_j$ et $m_i \neq m_j$, la distance de Hamming est
     4, il faut pour passer de $C_i$ à $C_j$ éteindre $m_i$ et $n_i$ puis allumer
     $m_j$ et $n_j$.
 
@@ -150,10 +150,10 @@ Un code 2 parmi 5, représente chaque chiffre de 0 à 9 sur 5 bits.
   \end{solution}
 
 \item La distance de Hamming d'un code permet de calculer combien d'erreurs
-  peuvent être detectés $e_d$ et combien d'erreurs peuvent être corrigées $e_c$.
+  peuvent être detectées $e_d$ et combien d'erreurs peuvent être corrigées $e_c$.
   Ainsi, $e_d = d_C - 1$ et $e_c = \lfloor \frac{d_C-1}{2} \rfloor$.
   Combien d'erreurs peuvent être détectées par le code 2/5 ?
-  Combien d'erreurs peuvent être corrigés ?
+  Combien d'erreurs peuvent être corrigées ?
 
   \begin{solution}
     $e_d = 2-1 = 1$ et $e_c = 0$.
@@ -163,7 +163,8 @@ Un code 2 parmi 5, représente chaque chiffre de 0 à 9 sur 5 bits.
 \section{Code avec bit de parité}
 On veut envoyer des mots ($a_3\dots a_0$) de $4$ bits sur un canal. Le code de parité consiste
 à ajouter un bit $p$ devant le mot $pa_3\dots a_0$ qui signale la parité de la
-somme des bits du mot ($p = a_3 \oplus a_2  \oplus a_1 \oplus a_0$).
+somme des bits du mot ($p = a_3 \oplus a_2  \oplus a_1 \oplus a_0$). Si la somme est paire,
+$p = 0$, sinon $p = 1$.
 
 \begin{enumerate}
 \item Encoder les mots $1010$ et $1000$ avec un bit de parité.
@@ -192,7 +193,7 @@ somme des bits du mot ($p = a_3 \oplus a_2  \oplus a_1 \oplus a_0$).
 \item Combien d'erreurs peuvent être détectées ? Combien peuvent être
     corrigées ?
 \begin{solution}
-  On peut détecter $2-1=1$ erreurs et on peut en corriger aucune.
+  On peut détecter $2-1=1$ erreur et on ne peut en corriger aucune.
 \end{solution}
 \end{enumerate}
 
@@ -240,7 +241,7 @@ par 000 et chaque 1 par 111.
         \item La probabilité d'avoir un bon message avant correction, c'est
           $P(N_{300}=0) = C_{300}^0.p_e^0.(1-p_e)^{300} = (1-p_e)^{300} > 0.73$
 
-        \item Soit $P_1$ a probabilité d'avoir une ou zéro erreurs par bloc de trois bits:
+        \item Soit $P_1$ a probabilité d'avoir une ou zéro erreur par bloc de trois bits:
           $ P_1 = P(N_3=1) + P(N_3=0) = 3.pe.(1-p_e)^2 + (1-p_e)^3$
 
           Donc la probabilité de pouvoir corriger un bloc de trois bits
