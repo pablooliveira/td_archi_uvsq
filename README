@@ -7,6 +7,13 @@ Pour compiler un sujet de TD et sa correction:
 Le sujet et sa correction seront construits dans le
 sous-répertoire build/
 
+
+Attention, pour compiler les sujets il faut le fichier latex aeguill.sty,
+sous Debian le fichier peut-être installé avec le paquet texlive-lang-french.
+
+Certains sujets nécessitent également d'installer la librairie Tikz,
+sous Debian installer le paquet texlive-pictures.
+
 Mainteneur: Pablo Oliveira <pablo.oliveira@prism.uvsq.fr>
 Contributeurs:
  Julien Jaeger, nouveaux exercices et corrections
