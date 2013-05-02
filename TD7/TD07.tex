@@ -282,17 +282,29 @@ On souhaite réaliser un circuit multiplieur.
   \item Ce schéma marche t'il pour des entrées codées en complément à 2.
     Si ce n'est pas le cas, comment faudrait-il le modifier ?
     \begin{solution}
-      $$B \times A = ( -A \times b_3).2^3 + (A \times b_2).2^2 + (A \times
-      b_1).2 + (A \times b_0)$$
+      On veut multiplier A et B, mais cette fois ci ils peuvent être signés.
+      On décompose le produit de la manière suivante :
+      $$B \times A = ( -b_3 \times 2^3 + b_2 \times 2^2 + b_1 \times 2^1 + b_0 \times 2^0) \times A$$
+      Ici c'est la définition de B en CA2 où le dernier bit est bit de signe. Puis par distributivité du produit :
+      $$B \times A = (A \times( -b_3)) \times 2^3 + (A \times b_2) \times 2^2 + ... + (A \times b_0)$$
 
-      Il faut prendre en compte deux facteurs:
+      Maintenant il suffit d'additionner les facteurs (ou produits partiels) entre eux.
+      \\Deux remarques importantes:
       \begin{itemize}
-        \item Dans le dernier étage il faut utiliser $-A = \overline{A} + 1$.
-        \item Dans tous les étages il faut penser à propager le bit de signe
-          pour faire la somme des produits partiels.
+        \item Le terme $(A \times (-b_3)) \times 2^3$ peut être réécrit $(-A \times b_3) \times 2^3$.
+	  Or par définition du CA2, $-A = \overline{A} + 1$	, c'est pourquoi on complémente 
+	  A lorsque b3 est à 1.
+	\item Lorsque l'on additionne des produits partiels en CA2, il faut faire 
+	  attention à propager le bit de signe. Par exemple, supposons que le résultat 
+	  du premier étage est 11 (-1 sur deux bits) et le résultat du deuxième étage 
+	  est 100 (-4 sur trois bits). Si on additionne sans extension de signe 
+	  $11 + 100 = 111$, le résultat est -1 sur 3 bits ce qui est faux.
+	  C'est pourquoi il faut étendre le bit de signe $111 + 100 = 1011$ : le
+	  résultat devient $-8 + 2 + 1 = -5$, ce qui est correct.
       \end{itemize}
 
       \includegraphics[width=10cm]{4-mult-CA-2}
+      
     \end{solution}
 
 \end{enumerate}
