@@ -56,7 +56,8 @@ Par exemple pour encoder $-27$ on prendra $1100100_2 = 100_{10}$.
 \section{Repr\'esentation des r\'eels}
 \begin{enumerate}
 
-\item Donnez la plus grande et la plus petite valeur strictement positives repr\'esentables en simple pr\'ecision (normalis\'e). M\^eme question avec un nombre d\'enormalis\'e.
+\item Donnez la plus grande et la plus petite valeur strictement positives repr\'esentables en simple pr\'ecision normalis\'e,
+c'est-à-dire sur un mot de 32 bits dont 1 bit de signe, 8 bits d'exposant et 23 bits de mantisse. M\^eme question avec un nombre d\'enormalis\'e.
 
 \begin{solution}
 Minimum = $0 00000001 0000000000000000000000$, soit $2^{-126}$.
@@ -114,8 +115,8 @@ $0\quad 1111\quad 10000000001$
 
 \begin{enumerate}
   \item $131.125 = 1.0244140625 \times 2^{7}$
-  \item $0.018310546875 = 1.171875 \times 2^{-6}$
-  \item dénormalisé: $0.00439453125 (0.28125 \times 2^{-6})$
+  \item $-0.018310546875 = -1.171875 \times 2^{-6}$
+  \item dénormalisé: $0.002197266 (0.140625 \times 2^{-6})$
   \item NaN
 \end{enumerate}
 
@@ -132,7 +133,7 @@ $C800000000000000_{16}$
 \begin{solution}
 $4004000000000000 (= 2.5) = 40200000$ en simple
 
-$37E8000000000001 (= (1.5+\epsilon)*2^{-129}) = 00180000$ en simple
+$37E8000000000000 (= (1.5+\epsilon)*2^{-129}) = 00180000$ en simple
 
 $C800000000000000_{16} (=-2^{129})$ overflow, \'eventuellement $FF800000$ ($-\infty$)
 
@@ -178,7 +179,7 @@ Le résultat (déjà normalisé): 1 1101 10001110000 = -99.5
 \end{enumerate}
 \section{Multiplication de flottants}
 \begin{enumerate}
-\item Effectuez les multiplications suivantes:
+\item Effectuez les multiplications suivantes:\\
 $0\quad 1001\quad 00110000000 \times 0\quad  0111\quad  10000000000$
 
 $1\quad 1100\quad 00000000000 \times 0\quad  0110\quad  01000000000$
