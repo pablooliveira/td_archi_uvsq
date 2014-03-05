@@ -111,7 +111,7 @@ la taille du chemin critique.
   $$R_{i+1} = G_{i+1} + P_{i+1}.(G_i + \sum^{i-1}_{j=0}{(G_j.\prod^i_{k=j+1}{P_k})} +
   R_0.\prod^i_{j=0}{P_j})$$
 
-  $$ R_{i+1} = G_{i+1} + \sum^{i-1}_{j=0}{(G_j.\prod^i_{k=j+1}{P_k})} +
+  $$ R_{i+1} = G_{i+1} + \sum^{i-1}_{j=0}{(G_j.\prod^{i+1}_{k=j+1}{P_k})} +
   R_0.\prod^{i+1}_{j=0}{P_j})$$
 \end{solution}
 
