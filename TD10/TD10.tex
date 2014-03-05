@@ -88,31 +88,31 @@ la taille du chemin critique.
 \includegraphics{TD10-CLA1}
 \item Exprimez $R_1$ en fonction de $P_0$,$G_0$ et $R_0$?
 \begin{solution}
-  $$ R_1 = G_0 + P_0.C_0 $$
+  $$ R_1 = G_0 + P_0.R_0 $$
 \end{solution}
 
 \item Exprimez $R_2$ en fonction de $P_1$, $G_1$, $P_0$, $G_0$ et $R_0$.
 \begin{solution}
-  $$ R_2 = G_1 + P_1.C_1 = G_1 + P_1.(G_0 + P_0.C_0) = G_1 + P_1.G_0 + P_0.P_1.C_0$$
+  $$ R_2 = G_1 + P_1.R_1 = G_1 + P_1.(G_0 + P_0.R_0) = G_1 + P_1.G_0 + P_0.P_1.R_0$$
 \end{solution}
 
 \item Montrez par récurrence que
-  $$R_i = G_i + \sum^{i-1}_{j=0}{(G_j.\prod^i_{k=j+1}{P_k})} + C_0.\prod^i_{j=0}{P_j}$$
+  $$R_i = G_i + \sum^{i-1}_{j=0}{(G_j.\prod^i_{k=j+1}{P_k})} + R_0.\prod^i_{j=0}{P_j}$$
 
 \begin{solution}
-  Cas de base $i=1$: $R_1 = G_0 + C_0.P_0$ vérifie l'équation.
+  Cas de base $i=1$: $R_1 = G_0 + R_0.P_0$ vérifie l'équation.
 
   Récurrence, supposons l'hypothèse vraie pour $i$:
   $$R_i = G_i + \sum^{i-1}_{j=0}{(G_j.\prod^i_{k=j+1}{P_k})} +
-  C_0.\prod^i_{j=0}{P_j}$$
+  R_0.\prod^i_{j=0}{P_j}$$
 
-  $$R_{i+1} = G_{i+1} + P_{i+1}.C_{i}$$
+  $$R_{i+1} = G_{i+1} + P_{i+1}.R_{i}$$
 
   $$R_{i+1} = G_{i+1} + P_{i+1}.(G_i + \sum^{i-1}_{j=0}{(G_j.\prod^i_{k=j+1}{P_k})} +
-  C_0.\prod^i_{j=0}{P_j})$$
+  R_0.\prod^i_{j=0}{P_j})$$
 
   $$ R_{i+1} = G_{i+1} + \sum^{i-1}_{j=0}{(G_j.\prod^i_{k=j+1}{P_k})} +
-  C_0.\prod^{i+1}_{j=0}{P_j})$$
+  R_0.\prod^{i+1}_{j=0}{P_j})$$
 \end{solution}
 
 \item En utilisant les équations précédentes, proposez un circuit pour le CLA.
