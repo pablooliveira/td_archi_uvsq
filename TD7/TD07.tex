@@ -23,92 +23,25 @@ decorations.pathreplacing,chains,calc,decorations.pathmorphing,matrix,circuits.l
 \begin{document}
 \maketitle
 
+\section{Minterms et Maxterms}
+Nous considérerons la fonction logique, $XOR3(A,B,C) = A \oplus B \oplus C$, qui correspond à une porte XOR à trois entrées.
+\begin{enumerate}
+  \item Donner la table de vérité de $XOR3$.
+  \item Écrire les minterms de $XOR3$. 
+      \begin{itemize}
+        \item Remarquez que la somme des minterms donne une forme disjonctive de $XOR3$.
+        \item Remarquez que pour chaque minterm, seule une combinaison unique $(a,b,c)$ rends le terme vrai.
+              On identifiera donc le minterm avec la valeur décimale correspondante au mot binaire $abc_2$.
+      \end{itemize}
+  \item Écrire les minterms de $\overline{XOR3}$. Donner une forme disjonctive de $\overline{XOR3}$.
+  \item En utilisant la loi De Morgan, donner une forme conjonctive de $XOR3$. Chaque terme de la forme conjonctive ainsi obtenue est appellé un maxterm. 
+  \item Pour chaque maxterm, y a t'il une unique combinaison de $(a,b,c)$ qui rends le maxterm vrai ? 
+  \item Pour chaque maxterm, y a t'il une unique combinaison de $(a,b,c)$ qui rends le maxterm faux ? 
+  \item Proposez un système permettant d'identifier chaque maxterm avec une valeur décimale. 
+\end{enumerate}
+
 \section{Circuits additioneurs (retour)}
 \begin{enumerate}
-\item Un demi additionneur est composé de:
-  \begin{itemize}
-  \item deux entrées: les bits $a$ et $b$
-  \item deux sorties: $s$ la somme des deux bits et $r$ l'éventuelle retenue.
-  \end{itemize}
-  Donner les expressions booléennes de $s$ et $r$ en fonction de $a$ et $b$.
-\begin{solution}
-  $s = a \oplus b$ et $r = ab$.
-\end{solution}
-\item Proposer un circuit pour le demi additionneur.
-\begin{solution}
-\begin{tikzpicture}[circuit logic CDH,
-tiny circuit symbols,
-every circuit symbol/.style={
-fill=white,draw}]
-\matrix[column sep=0.7cm, row sep=0.7cm]
-{
-\node (A) {a};  & \node [xor gate] (x) {};& \node (S) {s};  \\
-\node (B) {b};  & \node [and gate] (a) {};& \node (R) {r};\\
-};
-\draw (A.east) -- ++(right:3mm) |- (x.input 1);
-\draw (B.east) -- ++(right:6mm) |- (x.input 2);
-\draw (A.east) -- ++(right:3mm) |- (a.input 1);
-\draw (B.east) -- ++(right:6mm) |- (a.input 2);
-
-\draw (x.output) -- ++(right:3mm) |- (S.west);
-\draw (a.output) -- ++(right:3mm) |- (R.west);
-\end{tikzpicture}
-\end{solution}
-\item Un additionneur complet est composé de:
-  \begin{itemize}
-    \item trois entrées: les bits $a$ et $b$ et $r_0$ la retenue
-      propagé par l'additionneur précédent.
-    \item deux sorties: $s = a + b + r_0 [2]$ et $r_1$ l'éventuelle retenue lors
-      du calcul de $s$.
-  \end{itemize}
-  Construire un circuit pour l'additionneur complet. Pour cela utiliser
-  deux demi-additionneur ainsi qu'une porte OU.
-
-\begin{solution}
-\begin{tikzpicture}[circuit logic CDH,
-tiny circuit symbols,
-every circuit symbol/.style={
-fill=white,draw}]
-\matrix[column sep=0.7cm, row sep=0.7cm]
-{
-\node (A) {a};  &                                                    & &&\\
-                & \node[draw] (ha1) {$\frac{1}{2}+$}; & \node[draw] (ha2) {$\frac{1}{2}+$};& \node (outs) {s};&\\
-\node (B) {b};  & \node (R)[yshift=3mm] {$r0$};                   &                                    &\node (o) [or gate] {}; & \node (outr) {r};\\
-};
-\draw (A.east) -- ++(right:3mm) |- ([yshift=1mm]ha1.west) ;
-\draw (B.east) -- ++(right:6mm) |- ([yshift=-1mm]ha1.west);
-\draw ([yshift=1mm]ha1.east) -- ++(right:3mm) |- ([yshift=1mm]ha2.west);
-\draw (R.east) -- ++(right:6mm) |- ([yshift=-1mm]ha2.west);
-
-\draw ([yshift=-1mm]ha1.east) -- ++(right:3mm) |- (o.input 2);
-\draw ([yshift=-1mm]ha2.east) -- ++(right:3mm) |- (o.input 1);
-
-
-\draw (o.output) -- (outr);
-\draw (ha2.east) -- (outs);
-\end{tikzpicture}
-\end{solution}
-
-
-\item Additionneur 4 bits. Un additionneur 4 bits possède 8 signaux en entrée et
-  5 signaux en sortie:
-  \begin{itemize}
-    \item entrées: $A=a_3a_2a_1a_0$ et $B=b_3b_2b_1b_0$ deux nombres codés sur
-      4 bits chacun.
-    \item sorties: $C=c_3c_2c_1c_0$ et $r$. C est la somme de $A$ et $B$ et $r$
-      l'éventuelle retenue.
-  \end{itemize}
-  En utilisant les circuits des questions précédentes proposer un circuit pour
-  l'additionneur 4 bits.
-
-\begin{solution}
-    On met en série: demi-additionneur et trois additioneurs complets.
-    La retenue se propage d'une additionneur au suivant.
-
-    Attention le temps de calcul est limité par la propagagtion de la retenue. Pour des mots grande taille (16 bits), il vaut
-    mieux utiliser des additionneurs plus complexes comme le Carry Look Ahead (CLA) addder.
-\end{solution}
-
 \item Soit deux nombres positifs: $A=a_3a_2a_1a_0$ et $B=b_3b_2b_1b_0$, implémenter
   le circuit de la fonction $C(A,B) = A < B$ \textbf{en utilisant un circuit
     additionneur}.
@@ -202,7 +135,7 @@ fill=white,draw}]
 
       \begin{center}
       \begin{tabular}{c|c|c|c|c|}
-                       & $m_4$& $m_5$ & $m_7$ & $m13$\\
+        & $4$& $5$ & $7$ & $13$\\
                        \hline
         $b.d$           &   & X & X & X \\
         $b.\overline{c}$& X & X &   & X \\
