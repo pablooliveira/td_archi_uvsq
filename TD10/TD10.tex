@@ -97,7 +97,7 @@ la taille du chemin critique.
 \end{solution}
 
 \item Montrez par récurrence que
-  $$R_i = G_i + \sum^{i-1}_{j=0}{(G_j.\prod^i_{k=j+1}{P_k})} + R_0.\prod^i_{j=0}{P_j}$$
+  $$R_i = G_i + \sum^{i-1}_{j=0}{(G_j.\prod^{i-1}_{k=j+1}{P_k})} + R_0.\prod^{i-1}_{j=0}{P_j}$$
 
 \begin{solution}
   Cas de base $i=1$: $R_1 = G_0 + R_0.P_0$ vérifie l'équation.
@@ -108,11 +108,11 @@ la taille du chemin critique.
 
   $$R_{i+1} = G_{i+1} + P_{i+1}.R_{i}$$
 
-  $$R_{i+1} = G_{i+1} + P_{i+1}.(G_i + \sum^{i-1}_{j=0}{(G_j.\prod^i_{k=j+1}{P_k})} +
-  R_0.\prod^i_{j=0}{P_j})$$
+  $$R_{i+1} = G_{i+1} + P_{i+1}.(G_i + \sum^{i-1}_{j=0}{(G_j.\prod^{i-1}_{k=j+1}{P_k})} +
+  R_0.\prod^{i-1}_{j=0}{P_j})$$
 
-  $$ R_{i+1} = G_{i+1} + \sum^{i-1}_{j=0}{(G_j.\prod^{i+1}_{k=j+1}{P_k})} +
-  R_0.\prod^{i+1}_{j=0}{P_j})$$
+  $$ R_{i+1} = G_{i+1} + \sum^{i}_{j=0}{(G_j.\prod^{i}_{k=j+1}{P_k})} +
+  R_0.\prod^{i}_{j=0}{P_j}$$
 \end{solution}
 
 \item En utilisant les équations précédentes, proposez un circuit pour le CLA.
