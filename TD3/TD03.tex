@@ -52,7 +52,7 @@ char premier_bit_a_un(uint32_t M) {
         ce processus en remplaçant $M$ par $M_g$.
     \end{enumerate}
 
-    Ecrire cet algorithme en C. Pour selectionner la partie gauche d'un mot de
+    Écrire cet algorithme en C. Pour sélectionner la partie gauche d'un mot de
     32 bits vous pouvez utiliser l'opération \texttt{M \& 0xFFFF0000} par exemple.
 
     \begin{solution}
@@ -123,7 +123,7 @@ Un code 2 parmi 5, représente chaque chiffre de 0 à 9 sur 5 bits.
     $d(C_5, C_6) = 4$
   \end{solution}
 
-\item La distance de Hamming $d_C$ d'un code est definie comme la plus petite
+\item La distance de Hamming $d_C$ d'un code est définie comme la plus petite
   distance de Hamming possible entre deux mots distincts du code. Soit $d_C = min
   \{\forall i \neq j, \quad d_h(C_i,C_j) \}$. Quelle est la distance de Hamming
   pour le code 2 parmi 5.
@@ -138,19 +138,20 @@ Un code 2 parmi 5, représente chaque chiffre de 0 à 9 sur 5 bits.
     Premier cas : $n_i = n_j$ et $m_i = m_j$ impossible car $C_i$ et $C_j$
     distincts.
 
-    Deuxième cas: $n_i = n_j$ et $m_i \neq m_j$ (ou vice-versa), la distance
-    de Hamming est 2, il faut pour passer de $C_i$ à $C_j$ éteindre $m_i$ et
+    Deuxième cas: un bit à 1 partagé par $C_i$ et $C_j$ et un bit différent.
+    Supposons ici sans perte de généralité $m_i \neq m_j$. Alors la distance de
+    Hamming est 2, il faut pour passer de $C_i$ à $C_j$ éteindre $m_i$ et
     allumer $m_j$.
 
-    Troisième cas: $n_i \neq n_j$ et $m_i \neq m_j$, la distance de Hamming est
+    Troisième cas: aucun bit à 1 partagé, la distance de Hamming est
     4, il faut pour passer de $C_i$ à $C_j$ éteindre $m_i$ et $n_i$ puis allumer
     $m_j$ et $n_j$.
 
-    Donc $d_C = 2$.
+    Donc $d_C = min(2,4) = 2$.
   \end{solution}
 
 \item La distance de Hamming d'un code permet de calculer combien d'erreurs
-  peuvent être detectées $e_d$ et combien d'erreurs peuvent être corrigées $e_c$.
+  peuvent être détectées $e_d$ et combien d'erreurs peuvent être corrigées $e_c$.
   Ainsi, $e_d = d_C - 1$ et $e_c = \lfloor \frac{d_C-1}{2} \rfloor$.
   Combien d'erreurs peuvent être détectées par le code 2/5 ?
   Combien d'erreurs peuvent être corrigées ?
@@ -176,10 +177,10 @@ $p = 0$, sinon $p = 1$.
 \item Calculer la distance de Hamming du code avec bit de parité.
 \begin{solution}
   \begin{itemize}
-  \item Prennons deux mots consécutifs du code: $00000$ et $10001$,
+  \item Prenons deux mots consécutifs du code: $00000$ et $10001$,
     $d_h(00000,10001) = 2$, donc $d_c \leq 2$.
 
-  \item Soit deux mots de 4 bits distincs $x$ et $y$,
+  \item Soit deux mots de 4 bits distincts $x$ et $y$,
     \begin{itemize}
       \item Si $d_h(x,y) \geq 2$ alors $d_h(parite(x), parite(y)) \geq 2$.
       \item Si $d_h(x,y) = 1$ alors $parite(x) \neq parite(y)$ donc
@@ -206,7 +207,7 @@ par 000 et chaque 1 par 111.
     \begin{solution}
       Il n'y a que 2 mots dans l'image du code, 000 et 111, la distance est 3.
     \end{solution}
-  \item Combien d'erreurs peuvent être detectées ? Combien peuvent être
+  \item Combien d'erreurs peuvent être détectées ? Combien peuvent être
     corrigées ?
     \begin{solution}
       $3-1 = 2$ erreurs peuvent être détectées. $\frac{2}{2} = 1$ erreur
@@ -233,8 +234,8 @@ par 000 et chaque 1 par 111.
     ? après correction ?
 
     \begin{solution}
-        Soit $N_n$ la loi donnant le nombre d'erreurs pour un message de longeur $n$.
-        $N_n$ suit une loi binomiale (car les erreurs sont des évenements
+        Soit $N_n$ la loi donnant le nombre d'erreurs pour un message de longueur $n$.
+        $N_n$ suit une loi binomiale (car les erreurs sont des évènements
         indépendants). Donc $P(N_n = k) = C_n^k.p_e^{k}.(1-p_e)^{(n-k)}$.
 
       \begin{itemize}
@@ -285,14 +286,14 @@ $p_3$ &   0   &   1   &   1   &   1   \\
       2 ou 3 (pour $a_3$)
     \end{solution}
   \item Quelle est donc la distance de Hamming du code ? Combien d'erreurs
-    peuvent être detectées ? Combien peuvent être corrigées ?
+    peuvent être détectées ? Combien peuvent être corrigées ?
     \begin{solution}
       La distance de Hamming du code est $2+1 = 3$. On peut donc détecter $2$ erreurs et en
       corriger $1$.
     \end{solution}
 
   \item Vous recevez les messages suivants, indiquez si une erreur s'est
-    produite, le cas écheant corrigez le mot reçu: $ 0001111 \quad 1110010 \quad
+    produite, le cas échéant corrigez le mot reçu: $ 0001111 \quad 1110010 \quad
     1101110 \quad 0011111 $.
 
     \begin{solution}
