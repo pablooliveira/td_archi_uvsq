@@ -123,42 +123,27 @@ $10000001_{2} + 11000000_{2} = 101000001_{2}$ (overflow)
 9 bits (sinon overflow)
 \end{solution}
 
-\item Deux méthodes existent pour convertir la représentation complément à 2 en
-  décimal:
-\begin{itemize}
-  \item soustraire 1 et faire un NON logique bit à bit (ce qui revient à passer par la
-    représentation en complément à 1) lorsque le bit de poids fort est à 1.
-  \item utiliser la décomposition suivante :
-    $$ (a_{n-1}a_{n-2}\dots a_{0})_{\textrm{cpl2}} = -a_{n-1}.2^{n-1} + a_{n-2}.2^{n-2} + \dots + a_0.2^{0}$$
-\end{itemize}
-Montrer que les deux méthodes sont équivalentes.
+\item Le complément à 2 d'un nombre positif $x = x_{n-1}2^{n-1} + \dots + x_{0}2^{0}$ codé sur $n$ bits peut-être défini de deux manières:
+  \begin{itemize}
+    \item $CA2(x) = 2^n-x$
+    \item $CA2(x) = \overline{x} + 1$ (le complément à 1 plus un).
+  \end{itemize}
+  Montrez que les deux définitions sont équivalentes.
 
-\begin{solution}
+  \begin{solution}
+
 Soit $x = x_{n-1}2^{n-1} + \dots + x_{0}2^{0}$, posons
 \begin{align*}
 2^n - x =& 2^n -  (x_{n-1}2^{n-1} + \dots + x_{0}2^{0})\\
 2^n - x =& (2^{n-1} + \dots + 2^{0} +1)  - (x_{n-1}2^{n-1}+\dots +x_{0}2^{0})\\
 2^n - x =& (1-x_{n-1})2^{n-1} + \dots + (1-x_{0})2^{0} +1\\
 2^n - x =& (\overline{x_{n-1}}2^{n-1} + \dots + \overline{x_{0}}2^{0} +1\\
-2^n - x =& 1 + \overline{x}\\
-\overline{x} =& 2^n - x - 1 \quad (1)\\
+2^n - x =& \overline{x} + 1\\
 \end{align*}
 
-Soit $p = (1p_{n-2}\dots p_{0})_{CA2} <0$
-On veut montrer que $ - \overline{p-1} = -2^{n-1} + p_{n-2}2^{n-2} + \dots +
-p_{0}2^0$
+  \end{solution}
 
-En utilisant $(1)$,
-\begin{align*}
-  \overline{p-1} =& 2^n - (p_{bin}-1) -1\\
-  \overline{p-1} =& 2.2^{n-1} - p_{bin}\\
-  \overline{p-1} =& 2.2^{n-1} - (2^{n-1}+p_{n-2}2^{n-2}+ \dots + p_{0}2^0)\\
-  \overline{p-1} =& 2^{n-1} -p_{n-2}2^{n-2}- \dots - p_{0}2^0\\
-  - \overline{p-1} =& -2^{n-1} +p_{n-2}2^{n-2}+ \dots + p_{0}2^0 \quad (cqfd)\\
-\end{align*}
-
-\end{solution}
-\end{enumerate}
+  \end{enumerate}
 
 \section{Un peu de programmation : cardinal d'un ensemble représenté avec un
   champs de bits}
