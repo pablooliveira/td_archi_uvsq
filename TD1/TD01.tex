@@ -12,7 +12,6 @@
 
 \title{Architecture des ordinateurs - TD 01}
 \author{}
-\date{Mercredi 2 février 2011}
 
 \begin{document}
 \maketitle
@@ -20,14 +19,14 @@
 \begin{enumerate}
 \item Convertissez les nombres d\'ecimaux suivants en binaire :
 
-$255_{10}$, $104_{10}$, $1048576_{10}$, $2010_{10}$
+$255_{10}$, $104_{10}$, $2010_{10}$
 
 \begin{solution}
  $255_{10} = 1111 1111_{2}$
  
  $104_{10} = 1101000_{2}$
  
- $1048576_{10} = 100000000000000000000_{2}$
+% $1048576_{10} = 100000000000000000000_{2}$
  
  $2010 = 11111011010_{2}$
 \end{solution}
@@ -57,7 +56,7 @@ $1234_{9} = 922_{10}$
 
 \item Convertissez les nombres binaires suivants en hexad\'ecimal puis en octal:
 
-$110_{2}$, $1011_{2}$, $1100000011011110_{2}$, $11110101100_{2}$
+$110_{2}$, $1011_{2}$,  $11110101100_{2}$, $1100000011011110_{2}$
 
 \begin{solution}
  $110_{2} = 6_{16} = 6_{8}$
@@ -72,18 +71,18 @@ $110_{2}$, $1011_{2}$, $1100000011011110_{2}$, $11110101100_{2}$
 
 \item Convertissez les nombres hexad\'ecimaux suivants en d\'ecimal :
 
-$400_{16}$, $A000_{16}$, $FFFF_{16}$, $7FFF_{16}$, $CAFE_{16}$
+$400_{16}$,  $FFF_{16}$, $7FF_{16}$, $A000_{16}$
 
 \begin{solution}
  $400_{16} = 1024_{10}$
 
+ $FFF_{16} = 4095_{10}$
+
+ $7FF_{16} = 2047_{10}$
+
  $A000_{16} = 40960_{10}$
 
- $FFFF_{16} = 65535_{10}$
-
- $7FFF_{16} = 32767_{10}$
-
- $CAFE_{16} = 51966_{10}$
+ %$CAFE_{16} = 51966_{10}$
 
 \end{solution}
 
@@ -124,31 +123,35 @@ $00001001_2 \times 00001010_2$
 
 $10101011_2 \times 11001010_2$
 
-$11111111_2 \times 11111111_2$
-
 \begin{solution}
  $00001001_2 (9_{10}) \times 00001010_2 (10_{10}) = 01011010_2 (90_2)$.
 
  $10101011_2 (171_{10}) \times 11001010_2 (202_{10}) = 1000011011101110_2 (34542_{10})$ le
  résultat produit un overflow.
 
- $11111111_2 (255_{10}) \times 11111111_2 (255_{10}) = 1111111000000001_2 (65025_{10})$ le
- résultat produit un overflow.
 \end{solution}
 
-
-\item Additionnons un entier $x$ codé en $n$ bits et un entier $y$ codé en $m$
-  bits, sur combien de bits faut-il coder le résultat pour éviter un overflow ?
+\item Quelle est l'entier le plus grand représentable sur $n$ bits ?
 
 \begin{solution}
+  $2^{n}-1$
+\end{solution}
 
+\item Additionnons un entier $x$ codé en $n$ bits et un entier $y$ codé en $m$
+  bits, avec $n \geq m$, sur combien de bits faut-il coder le résultat pour
+  éviter un overflow ?
+
+\begin{solution}
   Supposons sans perte de généralité que $n \geq m$.
   Prenons $x_{max} = 2^{n}-1$ et $y_{max} = 2^{m}-1$.
   Or $x+y \leq x_{max} + y_{max} = 2^{n} + 2^{m} - 2 = 2^{n}.(1 + 2^{m-n} - 2^{1-n}) <
   2^{n}.2$, il faut donc $n + 1 = max(n,m) + 1$ bits.
 \end{solution}
 
-\item Même question pour la multiplication avec $n \geq 2$ et $m \geq 2$.
+\item Soit un entier $x$ codé en $n$ bits et un entier $y$ codé en $m$
+  bits avec $n \geq m$. Montrez que $n+m$ bits suffisent pour représenter $x \times y$.
+
+  (Bonus plus difficile: montrez que le résultat ne peut pas être codé sur $n+m-1$ bits si $m \geq 2$.
 
 \begin{solution}
   Prenons $x_{max} = 2^{n}-1$ et $y_{max} = 2^{m}-1$.
@@ -204,6 +207,8 @@ $0101 0001 0010 = 512$
 \end{solution}
 
 \item Estimez la rapport entre le nombre de bits n\'ecessaires pour coder un nombre en binaire et en binaire cod\'e d\'ecimal.
+  Rappel de cours: pour coder l'entier $N$, il faut $\lceil log_b(N+1) \rceil$ bits en base b. 
+  Quel est la représentation la plus compacte ?
 
 \begin{solution}
 Binaire : Il faut $\lceil log_2(n+1) \rceil$ bits.
