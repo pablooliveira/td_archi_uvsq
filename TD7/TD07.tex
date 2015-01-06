@@ -27,17 +27,17 @@ decorations.pathreplacing,chains,calc,decorations.pathmorphing,matrix,circuits.l
 Nous considérerons la fonction logique, $XOR3(A,B,C) = A \oplus B \oplus C$, qui correspond à une porte XOR à trois entrées.
 \begin{enumerate}
   \item Donner la table de vérité de $XOR3$.
-  \item Écrire les minterms de $XOR3$. 
+  \item Écrire les minterms de $XOR3$.
       \begin{itemize}
         \item Remarquez que la somme des minterms donne une forme disjonctive de $XOR3$.
         \item Remarquez que pour chaque minterm, seule une combinaison unique $(a,b,c)$ rends le terme vrai.
               On identifiera donc le minterm avec la valeur décimale correspondante au mot binaire $abc_2$.
       \end{itemize}
   \item Écrire les minterms de $\overline{XOR3}$. Donner une forme disjonctive de $\overline{XOR3}$.
-  \item En utilisant la loi De Morgan, donner une forme conjonctive de $XOR3$. Chaque terme de la forme conjonctive ainsi obtenue est appellé un maxterm. 
-  \item Pour chaque maxterm, y a t'il une unique combinaison de $(a,b,c)$ qui rends le maxterm vrai ? 
-  \item Pour chaque maxterm, y a t'il une unique combinaison de $(a,b,c)$ qui rends le maxterm faux ? 
-  \item Proposez un système permettant d'identifier chaque maxterm avec une valeur décimale. 
+  \item En utilisant la loi De Morgan, donner une forme conjonctive de $XOR3$. Chaque terme de la forme conjonctive ainsi obtenue est appellé un maxterm.
+  \item Pour chaque maxterm, y a t'il une unique combinaison de $(a,b,c)$ qui rends le maxterm vrai ?
+  \item Pour chaque maxterm, y a t'il une unique combinaison de $(a,b,c)$ qui rends le maxterm faux ?
+  \item Proposez un système permettant d'identifier chaque maxterm avec une valeur décimale.
 \end{enumerate}
 
 \section{Circuits additioneurs (retour)}
@@ -158,7 +158,7 @@ Nous considérerons la fonction logique, $XOR3(A,B,C) = A \oplus B \oplus C$, qu
       \end{center}
 
       \begin{solution}
-        $\overline{b}.\overline{c} + \overline{c}.d + \overline{a}.b.d$
+        $\overline{b}.\overline{c} + c.\overline{d} + \overline{a}.b.d$
       \end{solution}
 
     \item $f(a,b,c,d)=\Sigma m(4,8,10,11,12,15) + d(9,14)$:
@@ -225,19 +225,19 @@ On souhaite réaliser un circuit multiplieur.
       \\Deux remarques importantes:
       \begin{itemize}
         \item Le terme $(A \times (-b_3)) \times 2^3$ peut être réécrit $(-A \times b_3) \times 2^3$.
-	  Or par définition du CA2, $-A = \overline{A} + 1$	, c'est pourquoi on complémente 
+	  Or par définition du CA2, $-A = \overline{A} + 1$	, c'est pourquoi on complémente
 	  A lorsque b3 est à 1.
-	\item Lorsque l'on additionne des produits partiels en CA2, il faut faire 
-	  attention à propager le bit de signe. Par exemple, supposons que le résultat 
-	  du premier étage est 11 (-1 sur deux bits) et le résultat du deuxième étage 
-	  est 100 (-4 sur trois bits). Si on additionne sans extension de signe 
+	\item Lorsque l'on additionne des produits partiels en CA2, il faut faire
+	  attention à propager le bit de signe. Par exemple, supposons que le résultat
+	  du premier étage est 11 (-1 sur deux bits) et le résultat du deuxième étage
+	  est 100 (-4 sur trois bits). Si on additionne sans extension de signe
 	  $11 + 100 = 111$, le résultat est -1 sur 3 bits ce qui est faux.
 	  C'est pourquoi il faut étendre le bit de signe $111 + 100 = 1011$ : le
 	  résultat devient $-8 + 2 + 1 = -5$, ce qui est correct.
       \end{itemize}
 
       \includegraphics[width=10cm]{4-mult-CA-2}
-      
+
     \end{solution}
 
 \end{enumerate}
