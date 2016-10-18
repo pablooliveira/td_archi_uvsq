@@ -53,10 +53,31 @@ char premier_bit_a_un(uint32_t M) {
     \end{enumerate}
 
     Écrire cet algorithme en C. Pour sélectionner la partie gauche d'un mot de
-    32 bits vous pouvez utiliser l'opération \texttt{M \& 0xFFFF0000} par exemple.
+    32 bits vous pouvez utiliser l'opération \texttt{M \& 0xFFFF0000} par exemple
+    ou un décalage \verb!M >> 16!.
 
     \begin{solution}
 \begin{verbatim}
+
+
+uint32_t shift[5]  = {16        , 8     , 4   , 2     , 1   };
+
+char premier_bit_a_un_dichotomique(uint32_t M) {
+    char pos = 0;
+    char i;
+
+    for (i = 0; i <= 4; i++) {
+       uint32_t Mg = M >> shift[i];
+       if (Mg) {  // le bit a un est dans Mg
+          M = Mg; // on remplace M par Mg
+          pos += shift[i];   // on réajuste la position
+                             // (on aurait pu utiliser |=)
+       }
+    }
+
+    return pos;
+}
+
 
 uint32_t masque[5] = {0xFFFF0000, 0xFF00, 0xF0, 0b1100, 0b10};
 uint32_t shift[5]  = {16        , 8     , 4   , 2     , 1   };
