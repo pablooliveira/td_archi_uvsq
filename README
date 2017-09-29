@@ -7,7 +7,6 @@ Pour compiler un sujet de TD et sa correction:
 Le sujet et sa correction seront construits dans le
 sous-répertoire build/
 
-
 Attention, pour compiler les sujets il faut le fichier latex aeguill.sty,
 sous Debian le fichier peut-être installé avec le paquet texlive-lang-french.
 
@@ -27,6 +26,7 @@ Contributeurs:
  Loïc Thébault, corrections
  Cédric Valensi, nombreux exercices corrigés ainsi que l'aide mémoire IEEE-754
  Laurent Paxent, correction
+ Romain Pillot, corrections
 
 Merci à l'équipe de Comelec de l'ENST de mettre ses TDs en libre accès,
 http://comelec.enst.fr/tpsp/eni/. Certains des exercices sont inspirés
