@@ -14,6 +14,11 @@ sous Debian le fichier peut-être installé avec le paquet texlive-lang-french.
 Certains sujets nécessitent également d'installer la librairie Tikz,
 sous Debian installer le paquet texlive-pictures.
 
+Selon les distributions, il est possible que des paquets supplémentaires soient requis :
+- texlive-lang-cyrillic
+- exam : https://www.ctan.org/tex-archive/macros/latex/contrib/exam/
+- karnaugh : https://www.ctan.org/pkg/karnaugh
+
 Mainteneur: Pablo Oliveira <pablo.oliveira@prism.uvsq.fr>
 Contributeurs:
  Julien Jaeger, nouveaux exercices et corrections
