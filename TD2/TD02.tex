@@ -39,7 +39,7 @@ $-45_{10} = 10101101_{2}$ en signe+abs, $11010010_{2}$ en compl\'ement \`a 1 et 
 
 $11111111_{2}$, $01001000_{2}$, $10001111_{2}$
 
-Quelles seraient ces valeurs si ces nombres binaires représentaient un compl\'ement \`a 1 ? Un signe plus valeur absolue ?
+Quelles seraient ces valeurs si ces nombres binaires reprÃ©sentaient un compl\'ement \`a 1 ? Un signe plus valeur absolue ?
 \begin{solution}
 $11111111_{2} = -1_{10}$ si cplment 2, $0_{10}$ si cplment 1 et $-127_{10}$ si sign+valeur abs.
 
@@ -123,12 +123,12 @@ $10000001_{2} + 11000000_{2} = 101000001_{2}$ (overflow)
 9 bits (sinon overflow)
 \end{solution}
 
-\item Le complément à 2 d'un nombre positif $x = x_{n-1}2^{n-1} + \dots + x_{0}2^{0}$ codé sur $n$ bits peut-être défini de deux manières:
+\item Le complÃ©ment Ã  2 d'un nombre positif $x = x_{n-1}2^{n-1} + \dots + x_{0}2^{0}$ codÃ© sur $n$ bits peut-Ãªtre dÃ©fini de deux maniÃ¨res:
   \begin{itemize}
     \item $CA2(x) = 2^n-x$
-    \item $CA2(x) = \overline{x} + 1$ (le complément à 1 plus un).
+    \item $CA2(x) = \overline{x} + 1$ (le complÃ©ment Ã  1 plus un).
   \end{itemize}
-  Montrez que les deux définitions sont équivalentes.
+  Montrez que les deux dÃ©finitions sont Ã©quivalentes.
 
   \begin{solution}
 
@@ -145,38 +145,38 @@ Soit $x = x_{n-1}2^{n-1} + \dots + x_{0}2^{0}$, posons
 
   \end{enumerate}
 
-\section{Un peu de programmation : cardinal d'un ensemble représenté avec un
+\section{Un peu de programmation : cardinal d'un ensemble reprÃ©sentÃ© avec un
   champs de bits}
 
 Soit un ensemble $E \in \mathcal{P}([|0;31|])$ par exemple $E' = \{4,5,8,15\}$.
-Une représentation très compacte de cet ensemble est basée sur l'utilisation
-d'un champs de bit (\emph{bit set} en anglais). Dans cette représentation on
+Une reprÃ©sentation trÃ¨s compacte de cet ensemble est basÃ©e sur l'utilisation
+d'un champs de bit (\emph{bit set} en anglais). Dans cette reprÃ©sentation on
 encode $E$ sous la forme d'un mot de $32$ bits $M=(m_{31}m_{30}\dots m_{0})_2$.
-On utilise la convention convention suivante : $m_n = 1$ si et seulement si $n
-\in E$.  Par exemple, pour représenter l'ensemble $E'$ on utilisera le mot $M'=
+On utilise la convention suivante : $m_n = 1$ si et seulement si $n
+\in E$.  Par exemple, pour reprÃ©senter l'ensemble $E'$ on utilisera le mot $M'=
 00000000000000001000000100110000_2$.
 
-Nous souhaitons écrire une fonction \texttt{char get\_size(uint32\_t M);} qui
-calcule le cardinal de l'ensemble $E$. Cela revient à compter le nombre de bits
-à 1.
+Nous souhaitons Ã©crire une fonction \texttt{char get\_size(uint32\_t M);} qui
+calcule le cardinal de l'ensemble $E$. Cela revient Ã  compter le nombre de bits
+Ã  1.
 
 \begin{enumerate}
-\item Écrire la fonction \texttt{get\_size} en utilisant une boucle et
-  l'opérateur $>>$.  Dans le pire cas vous effectuerez $32$ itérations.
+\item Ã‰crire la fonction \texttt{get\_size} en utilisant une boucle et
+  l'opÃ©rateur $>>$.  Dans le pire cas vous effectuerez $32$ itÃ©rations.
 \begin{solution}
 \begin{verbatim}
 char get_size(uint32_t M) {
     char count = 0;
     while(M) {
-	    count += M & 1; // incrémenter si le dernier bit est à 1
-	    M = M >> 1; // décaler m à droite
+	    count += M & 1; // incrÃ©menter si le dernier bit est Ã  1
+	    M = M >> 1; // dÃ©caler m Ã  droite
     }
     return count;
 }
 \end{verbatim}
 \end{solution}
 
-\item Considérez le mot $M'$ ci-dessus. Calculez $M'' = M' \& (M'-1)$.
+\item ConsidÃ©rez le mot $M'$ ci-dessus. Calculez $M'' = M' \& (M'-1)$.
 Calculez $M''' = M'' \& (M''-1)$. Que remarquez vous ?
 \begin{solution}
 $M'' = 00000000000000001000000100110000_2 \& (00000000000000001000000100101111_2)
@@ -184,19 +184,19 @@ $M'' = 00000000000000001000000100110000_2 \& (00000000000000001000000100101111_2
 
 $M''' = 00000000000000001000000100000000_2$
 
-à chaque application de la formule on mets à zéro le bit le plus à droite.
+Ã  chaque application de la formule on mets Ã  zÃ©ro le bit le plus Ã  droite.
 \end{solution}
 
-\item Utilisez le résultat de la question précédente pour réécrire la
+\item Utilisez le rÃ©sultat de la question prÃ©cÃ©dente pour rÃ©Ã©crire la
 fonction \texttt{get\_size} en utilisant une boucle qui effectue au
-maximum $card(E)$ itérations.
+maximum $card(E)$ itÃ©rations.
 
 \begin{solution}
 \begin{verbatim}
 char get_size_faster(uint32_t M) {
     char count = 0;
     while(M) {
-	    M = M & (M-1); // on annule le bit à 1 le plus à droite.
+	    M = M & (M-1); // on annule le bit Ã  1 le plus Ã  droite.
 	    count += 1;
     }
     return count;
@@ -208,11 +208,11 @@ char get_size_faster(uint32_t M) {
   $card(E)$ ?
 \end{enumerate}
 \begin{solution}
-  Si on précalcule dans un tableau le nombre de bits à 1 dans des mots de 8 bits.
-  Une possiblité bien plus rapide consiste à découper l'entier en 4 mots de 8
-  bits et utiliser la table pour obtenir le résultat.
+  Si on prÃ©calcule dans un tableau le nombre de bits Ã  1 dans des mots de 8 bits.
+  Une possiblitÃ© bien plus rapide consiste Ã  dÃ©couper l'entier en 4 mots de 8
+  bits et utiliser la table pour obtenir le rÃ©sultat.
 
-  Bien entendu, on pourrait faire la même chose directement avec une table de 32
+  Bien entendu, on pourrait faire la mÃªme chose directement avec une table de 32
   bits, mais sa taille serait alors prohibitive.
 \end{solution}
 
