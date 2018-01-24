@@ -21,17 +21,17 @@
 
 \section{Codage excédent 127}
 
-La repr\'esentation sur 8 bits en excédent 127 consiste à
+La repr\'esentation d'un entier $x$ sur 8 bits en excédent 127 consiste à
 encoder la valeur $x + 127$ en binaire.
-Par exemple pour encoder $-27$ on prendra $1100100_2 = 100_{10}$.
+Par exemple, pour $-27$, on prendra $1100100_2 = 100_{10}$.
 
 \begin{enumerate}
-\item Quelle est la valeur minimale et maximale codable en excédent 127
+\item Quelles sont la valeur minimale et la valeur maximale codables en excédent 127
   sur 8 bits ?
   \begin{solution}
     -127 et 128
   \end{solution}
-  \item Donner la représentation en excédent 127 des nombres suivants:
+  \item Donner la représentation en excédent 127 des nombres suivants :
     10, 23 et -40
     \begin{solution}
       $10 = 10001001$
@@ -44,7 +44,7 @@ Par exemple pour encoder $-27$ on prendra $1100100_2 = 100_{10}$.
     \begin{enumerate}
       \item en convertissant chaque terme en décimal, puis en convertissant
         le résultat en excédent 127.
-      \item proposer une méthode qui ne nécessite pas le passage en décimal.
+      \item en proposant une méthode qui ne nécessite pas le passage en décimal.
     \end{enumerate}
     \begin{solution}
       $-118 + 68 = -50 = 1001101$
@@ -56,7 +56,7 @@ Par exemple pour encoder $-27$ on prendra $1100100_2 = 100_{10}$.
 \section{Repr\'esentation des r\'eels}
 \begin{enumerate}
 
-\item Donnez la plus grande et la plus petite valeur strictement positives repr\'esentables en simple pr\'ecision normalis\'e,
+\item Donnez la plus grande et la plus petite valeur strictement positives repr\'esentables en simple pr\'ecision normalis\'ee,
 c'est-à-dire sur un mot de 32 bits dont 1 bit de signe, 8 bits d'exposant et 23 bits de mantisse. M\^eme question avec un nombre d\'enormalis\'e.
 
 \begin{solution}
@@ -146,7 +146,7 @@ $C800000000000000_{16} (=-2^{129})$ overflow, \'eventuellement $FF800000$ ($-\in
 
 \begin{enumerate}
 
-\item Effectuez les calculs suivants en utilisant la repr\'esentation des r\'eels :
+\item Effectuez les additions suivantes :
 
 $0\quad  0101\quad  10111000011 + 0\quad  0011\quad  00011110101$
 
@@ -177,9 +177,9 @@ Le résultat (déjà normalisé): 1 1101 10001110000 = -99.5
 \end{verbatim}
 \end{solution}
 \end{enumerate}
-\section{Multiplication de flottants}
+\section{Multiplications de flottants}
 \begin{enumerate}
-\item Effectuez les multiplications suivantes:\\
+\item Effectuez les multiplications suivantes :\\
 $0\quad 1001\quad 00110000000 \times 0\quad  0111\quad  10000000000$
 
 $1\quad 1100\quad 00000000000 \times 0\quad  0110\quad  01000000000$
